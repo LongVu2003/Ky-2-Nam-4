@@ -1,10 +1,9 @@
 // Gọi thư viện DHT11
-//#include "DHT.h"            
+#include "DHT.h"            
  
-//const int DHTPIN = 2;       //Đọc dữ liệu từ DHT11 ở chân 2 trên mạch Arduino
-//const int DHTTYPE = DHT11;  //Khai báo loại cảm biến, có 2 loại là DHT11 và DHT22
- 
-//DHT dht(DHTPIN, DHTTYPE);
+const int DHTPIN = 2;       //Đọc dữ liệu từ DHT11 ở chân 2 trên mạch Arduino
+const int DHTTYPE = DHT11;  //Khai báo loại cảm biến, có 2 loại là DHT11 và DHT22
+ /DHT dht(DHTPIN, DHTTYPE);
  
 void setup() {
   Serial.begin(9600);
