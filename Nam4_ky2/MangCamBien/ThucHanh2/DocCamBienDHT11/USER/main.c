@@ -16,7 +16,7 @@ uint16_t u16Tim;
 uint8_t u8Buff[6];
 uint8_t uCheckSum;
 
-volatile char stt_toggle = 0;
+//volatile char stt_toggle = 0;
 
 void Led_Init();
 void Timer_Init();
