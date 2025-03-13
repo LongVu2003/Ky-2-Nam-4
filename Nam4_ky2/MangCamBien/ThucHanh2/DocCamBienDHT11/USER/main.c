@@ -12,184 +12,140 @@
 #include "stm32f10x_exti.h"             // Keil::Device:StdPeriph Drivers:EXTI
 #include "stm32f10x_tim.h"              // Keil::Device:StdPeriph Drivers:TIM
           // Keil::Device:StdPeriph Drivers:GPIO
-uint16_t u16Tim;
-uint8_t u8Buff[6];
-uint8_t uCheckSum;
 
 //volatile char stt_toggle = 0;
 
-void Led_Init();
-void Timer_Init();
 //void NVIC_Config();
-void Timer_Init()
+void GPIO_Config(void);
+void Timer2_Init(void);
+void DHT11_Start(void);
+uint8_t DHT11_Read_Byte(void);
+uint8_t DHT11_Read_Data(uint8_t *humidity_int, uint8_t *humidity_dec, uint8_t *temp_int, uint8_t *temp_dec);
+
+
+void Timer2_Init(void)
 {
-	TIM_TimeBaseInitTypeDef time;
-	RCC_APB1PeriphClockCmd(RCC_APB1Periph_TIM2,ENABLE);
-	time.TIM_CounterMode = TIM_CounterMode_Up;
-	time.TIM_Period = 19999;
-	time.TIM_ClockDivision = 0;
-	time.TIM_Prescaler = 7199;
-	time.TIM_RepetitionCounter = 0;
-	TIM_TimeBaseInit(TIM2,&time);
-	TIM_ClearFlag(TIM2,TIM_FLAG_Update);
-	TIM_ITConfig(TIM2,TIM_IT_Update,ENABLE);
-	NVIC_EnableIRQ(TIM2_IRQn);
-	TIM_Cmd(TIM2,ENABLE);
+    RCC_APB1PeriphClockCmd(RCC_APB1Periph_TIM2, ENABLE);
+    
+    TIM_TimeBaseInitTypeDef timerInit;
+    timerInit.TIM_CounterMode = TIM_CounterMode_Up;
+    timerInit.TIM_Period = 0xFFFF;
+    timerInit.TIM_Prescaler = 72 - 1;  
+    TIM_TimeBaseInit(TIM2, &timerInit);
+    TIM_Cmd(TIM2, ENABLE);
+}
+void GPIO_Config(void)
+{
+    GPIO_InitTypeDef gpio;
+    RCC_APB2PeriphClockCmd(RCC_APB2Periph_GPIOB, ENABLE);
+    gpio.GPIO_Mode = GPIO_Mode_Out_OD;
+    gpio.GPIO_Pin = GPIO_Pin_12;
+    gpio.GPIO_Speed = GPIO_Speed_50MHz;
+    GPIO_Init(GPIOB, &gpio);
 }
 
-void TIM2_IRQHandler()
+void DHT11_Start(void)
 {
-	if(TIM_GetITStatus(TIM2,TIM_IT_Update) != RESET)
-	{
-		stt_toggle = !stt_toggle;
-		//GPIO_WriteBit(GPIOC,GPIO_Pin_13,(BitAction)(1 - GPIO_ReadInputDataBit(GPIOC,GPIO_Pin_13)));
-	}
-	TIM_ClearITPendingBit(TIM2,TIM_IT_Update);
+    GPIO_InitTypeDef gpio;
+    gpio.GPIO_Mode = GPIO_Mode_Out_OD;
+    gpio.GPIO_Pin = GPIO_Pin_12;
+    gpio.GPIO_Speed = GPIO_Speed_50MHz;
+    GPIO_Init(GPIOB, &gpio);
+    GPIO_ResetBits(GPIOB, GPIO_Pin_12);
+    delay_ms(20);
+    GPIO_SetBits(GPIOB, GPIO_Pin_12);
+    delay_us(30);
+    gpio.GPIO_Mode = GPIO_Mode_IN_FLOATING;
+    GPIO_Init(GPIOB, &gpio);
 }
-void Config_DHT11()
+
+uint8_t DHT11_Read_Byte(void)
 {
-	//ENABLE CLK for GPIOC AND GPIOB
-	RCC_APB2PeriphClockCmd(RCC_APB2Periph_GPIOC,ENABLE);
-	RCC_APB2PeriphClockCmd(RCC_APB2Periph_GPIOB,ENABLE);
-	
-	GPIO_InitTypeDef gpio;
-	// LED - PC3 - DEBUG
-	gpio.GPIO_Mode = GPIO_Mode_Out_PP;
-	gpio.GPIO_Pin = GPIO_Pin_3;
-	gpio.GPIO_Speed = GPIO_Speed_50MHz;
-	GPIO_Init(GPIOB,&gpio);
-	
-	// DHT 11 - PB12
-	gpio.GPIO_Mode = GPIO_Mode_Out_OD;
-	gpio.GPIO_Pin = GPIO_Pin_12;
-	gpio.GPIO_Speed = GPIO_Speed_50MHz;
-	GPIO_Init(GPIOB,&gpio);
+    uint8_t i, byte = 0;
+    for(i = 0; i < 8; i++)
+    {
+        while(GPIO_ReadInputDataBit(GPIOB, GPIO_Pin_12) == 0);
+        TIM_SetCounter(TIM2, 0);
+        while(GPIO_ReadInputDataBit(GPIOB, GPIO_Pin_12) == 1);
+        if(TIM_GetCounter(TIM2) > 45)
+            byte = (byte << 1) | 1;
+        else
+            byte = (byte << 1);
+    }
+    return byte;
 }
-void Read_DHT11()
+
+uint8_t DHT11_Read_Data(uint8_t *humidity_int, uint8_t *humidity_dec, uint8_t *temp_int, uint8_t *temp_dec)
 {
-	GPIO_ResetBits(GPIOB,GPIO_Pin_12);
-	delay_ms(20);
-	GPIO_SetBits(GPIOB,GPIO_Pin_12);
-	
-	
-	// wait for response
-	TIM_SetCounter(TIM2,0);
-	while(TIM_GetCounter(TIM12) < 10) {
-		if(GPIO_ReadInputDataBit(GPIOB,GPIO_Pin_12)){
-			break;
-		}
-	}
-	// check if DHT11 response
-	
-	u16Tim = TIM_GetCounter(TIM2);
-	if(u16Tim >= 10){
-		while(1) {
-		}
-	}
-	
-	// firt low bit
-	TIM_SetCounter(TIM2,0);
-	while(TIM_GetCounter(TIM12) < 45) {
-		if(GPIO_ReadInputDataBit(GPIOB,GPIO_Pin_12)){
-			break;
-		}
-	}
-	// check if DHT11 response
-	u16Tim = TIM_GetCounter(TIM2);
-	if(u16Tim >= 45 || u16Tim <= 5){
-		while(1) {
-		}
-	}
-	// next high bit
-	TIM_SetCounter(TIM2,0);
-	while(TIM_GetCounter(TIM12) < 90) {
-		if(GPIO_ReadInputDataBit(GPIOB,GPIO_Pin_12)){
-			break;
-		}
-	}
-	// check if DHT11 response
-	u16Tim = TIM_GetCounter(TIM2);
-	if(u16Tim >= 90 || u16Tim <= 70){
-		while(1) {
-		}
-	}
-	
-	// next low bit
-	TIM_SetCounter(TIM2,0);
-	while(TIM_GetCounter(TIM12) < 95) {
-		if(GPIO_ReadInputDataBit(GPIOB,GPIO_Pin_12)){
-			break;
-		}
-	}
-	// check if DHT11 response
-	u16Tim = TIM_GetCounter(TIM2);
-	if(u16Tim >= 95 || u16Tim <= 75){
-		while(1) {
-		}
-	}
-	
-	// Read first 8 bit (Hum)
-	for(int i = 0 ; i < 8 ; i ++){
-		TIM_SetCounter(TIM2,0);
-		while(TIM_GetCounter(TIM2) < 65){
-			if(GPIO_ReadInputDataBit(GPIOB,GPIO_Pin_12)){
-				break;
-			}
-		}
-		
-		// check if time is out of range
-		u16Tim = TIM_GetCounter(TIM2);
-		if((u16Tim >= 65) || (u16Tim <= 45)){
-			while(1){
-			}
-		}
-		
-		// Cho chan PB12 xuong thap
-		TIM_SetCounter(TIM2,0);
-		while(TIM_GetCounter(TIM12) < 80) {
-			if(!GPIO_ReadInputDataBit(GPIOB,GPIO_Pin_12)){
-				break;
-			}
-		}
-	// check if time is out of range
-		u16Tim = TIM_GetCounter(TIM2);
-		if((u16Tim >= 80) || (u16Tim <= 10)){
-			while(1){
-			}
-		}
-		//shift left 1bit
-		
-		u8Buff[0] <<= 1;
-		if(u16Tim > 45){
-			// nhan dc bit 1;
-			u8Buff[0] |= 1;
-		}else {
-			// nhan dc bit 0;
-			u8Buff[0] &= ~1;
-		}
-	}
-	
-	uCheckSum = u8Buff[0] + u8Buff[1] + u8Buff[2] + u8Buff[3];
-	if(uCheckSum != u8Buff[4]){
-		while(1){
-		}
-	}
-	
+    uint8_t byte[5];
+    uint8_t i;
+    uint32_t timeout = 0;
+    while(GPIO_ReadInputDataBit(GPIOB, GPIO_Pin_12) == 1)
+    {
+        delay_us(1);
+        if(++timeout > 100)
+            return 0;
+    }
+    timeout = 0;
+    while(GPIO_ReadInputDataBit(GPIOB, GPIO_Pin_12) == 0)
+    {
+        delay_us(1);
+        if(++timeout > 100)
+            return 0;
+    }
+    timeout = 0;
+    while(GPIO_ReadInputDataBit(GPIOB, GPIO_Pin_12) == 1)
+    {
+        delay_us(1);
+        if(++timeout > 100)
+            return 0;
+    }
+    for(i = 0; i < 5; i++)
+    {
+        byte[i] = DHT11_Read_Byte();
+    }
+    
+    *humidity_int = byte[0];
+    *humidity_dec = byte[1];
+    *temp_int = byte[2];
+    *temp_dec = byte[3];
+    
+    return byte[4]; 
 }
+
 int main()
 {
+	uint8_t hum_int, hum_dec, temp_int, temp_dec, checksum;
 	SysTick_Init();
+	Timer2_Init();
+   GPIO_Config();
 	usart1_cfg_A9A10(BAUD_9600);
 	printf("hello world\n");
 	while(1)
-	{
-		
-		printf("Temperature : ");
-		printf("%d",u8Buff[2]);
-		printf("*C\n");
-		printf("Humidity : ");
-		printf("%d",u8Buff[0]);
-		printf("%\n");
-	}
+    {
+        DHT11_Start();
+        checksum = DHT11_Read_Data(&hum_int, &hum_dec, &temp_int, &temp_dec);
+        if ((hum_int + hum_dec + temp_int + temp_dec) == checksum)
+        {
+            printf("Do am: ");
+						printf("Do am :%d %",hum_int);
+            if(hum_dec == 0)
+                printf("0");
+            else
+                printf("%d",hum_dec);
+            
+						printf("Nhiet Do :%d *C",temp_int);
+            if(temp_dec == 0)
+                printf("0");
+            else
+                printf("%d",temp_dec);
+								printf("\r\n");
+        }
+        else
+        {
+            printf("Loi checksum!\r\n");
+        }
+        delay_ms(1000);
+    }
 }
 
