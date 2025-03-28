@@ -1,0 +1,9 @@
+- Bộ lọc : R - L - C 
+- Phối hợp trở kháng : Kết hợp các khối khác nhau lại làm sao cho công suất muốn truybfn tải là lớn nhất.
+
+
+1. Upconverter : Đẩy tần cao 
+2. Modulation : Dùng sóng mang để cõng thông tin truyền đi.
+3. Dectector  : Tách sóng riêng.
+4. Oscillator : bộ dao động 
+Học LNA, PA , Downconcerter or Demodulator/
