@@ -1,0 +1,16 @@
+Analysis & Synthesis Status : Successful - Wed Jun 04 22:16:01 2025
+Quartus Prime Version : 17.1.0 Build 590 10/25/2017 SJ Lite Edition
+Revision Name : ADC_IP
+Top-level Entity Name : adc_ver2
+Family : MAX 10
+Total logic elements : 1,180
+    Total combinational functions : 1,138
+    Dedicated logic registers : 113
+Total registers : 113
+Total pins : 187
+Total virtual pins : 0
+Total memory bits : 0
+Embedded Multiplier 9-bit elements : 0
+Total PLLs : 1
+UFM blocks : 0
+ADC blocks : 1
