@@ -25,7 +25,7 @@ Giá trị 12 bit từ ADC được hiển thị dưới dạng hexadecimal (th�
 IP Core "Altera Modular ADC" cung cấp giao diện để điều khiển và thu thập dữ liệu từ khối ADC cứng tích hợp trong chip MAX 10.
 - Tìm kiếm và Thêm IP: Trong IP Catalog của Platform Designer, tìm kiếm "Altera Modular ADC core"
 
-![Image](https://github.com/user-attachments/assets/ac0ded53-5302-4c9a-b8b5-d6f79555611c)
+![Image](https://github.com/user-attachments/assets/b3e4cf02-76c0-41f4-a238-c3b0853467ab)
 
 - Cấu hình Tham số:
     - Number of channels: 1: Chỉ sử dụng một chiết áp làm đầu vào.
@@ -35,7 +35,7 @@ IP Core "Altera Modular ADC" cung cấp giao diện để điều khiển và th
     - Mode: Single-channel, continuous sampling. : Hệ thống chỉ đọc một kênh ADC liên tục để cập nhật giá trị điện áp.
     - Xuất cổng (Export Ports): Các cổng giao diện Avalon Streaming command và response cần được xuất ra để logic Verilog tùy chỉnh có thể giao tiếp với IP core.
 
-![Image](https://github.com/user-attachments/assets/010bde0a-47cc-4448-a5ee-bcf85d7dfa6d)
+![Image](https://github.com/user-attachments/assets/e34aa9a5-094f-4044-be86-2828f2ed06a7)
 
 - Nhấn Finish, chúng ta sẽ thấy nó xuất hiện trong tab System Contents.
 - Ở dòng "command", hãy xuất cổng bằng cách nhấp đúp vào chỗ có dòng chữ "Double-click to export".
@@ -45,7 +45,7 @@ IP Core "Altera Modular ADC" cung cấp giao diện để điều khiển và th
 PLL (Phase-Locked Loop) là một bộ điều khiển xung nhịp trong FPGA, có chức năng tạo ra các tín hiệu xung nhịp có tần số và pha chính xác từ một tín hiệu xung nhịp tham chiếu. Nó được sử dụng để nhân tần số, chia tần số, hoặc tạo các tín hiệu xung nhịp đồng bộ với nhau.
 Tìm kiếm và Thêm IP: Trong IP Catalog, tìm kiếm "Avalon ALTPLL" (Hình 2.4) và thêm vào hệ thống.
 
-![Image](https://github.com/user-attachments/assets/29ffc6d9-15fc-466e-8111-046c2f6000d8)
+![Image](https://github.com/user-attachments/assets/98e0ac99-d966-4f97-96ec-3eb68b187cd3)
 
 Cấu hình Tham số: 
 - Input clock frequency : 50.0 MHz. Đây là tần số của bộ dao động chính trên kit DE10-Lite.
@@ -53,17 +53,17 @@ Cấu hình Tham số:
 - Output clock C1 frequency : 2.0 MHz.Dùng làm clock cho IP Modular ADC, cụ thể là đầu vào adc_pll_clock_clk. Tần số này được chọn để đảm bảo hoạt động ổn định cho ADC và cho phép IP core cấu hình các bộ chia tần nội bộ để đạt được tốc độ lấy mẫu 1 MSPS. Đạt được bằng cách đặt clk1_multiply_by = 1, clk1_divide_by = 25 với đầu vào 50MHz.
 - Các thông số về pha (phase shift) và chu kỳ hoạt động (duty cycle) thường được để mặc định (0 độ và 50%) cho các ứng dụng này, vì sự ổn định tần số là quan trọng nhất.
 
-![Image](https://github.com/user-attachments/assets/2bfecdcd-d37e-492f-89bc-e37efa95ff14)
+![Image](https://github.com/user-attachments/assets/1647f3b1-6691-449d-8304-e6a5ad2295c0)
 
-![Image](https://github.com/user-attachments/assets/3242a00b-339f-4caa-9f24-eb54a12d0e91)
+![Image](https://github.com/user-attachments/assets/dc94b476-c0cc-4cf8-81cd-079ae25b6dc9)
 
-![Image](https://github.com/user-attachments/assets/ee8d42ab-b07e-4edb-a1de-22421821792e)
+![Image](https://github.com/user-attachments/assets/9050225d-628f-4f75-aabc-25b8a94a0e87)
 
 ### 3. Cấu hình IP Core "Reset Controller".
 
 Tìm kiếm và Thêm IP: Trong IP Catalog, tìm kiếm "Reset Controller" và thêm hai thực thể vào hệ thống
 
-![Image](https://github.com/user-attachments/assets/fd4a7045-aa69-4e9b-9bb4-3e0a868c0649)
+![Image](https://github.com/user-attachments/assets/dac2d8dc-4c6f-4f52-b527-2f12e84f397e)
 
 Cấu hình Tham số :
 Reset_controller_0:
@@ -75,7 +75,7 @@ Reset_controller_1:
 - Đầu ra: Cung cấp tín hiệu reset đã được đồng bộ hóa cho IP Modular ADC (cổng reset_sink_reset_n) và có thể cho cả logic Verilog tùy chỉnh.
 - Thông số chính: Tương tự như Reset_controller_0.
 
-![Image](https://github.com/user-attachments/assets/50b8e453-7c38-4b07-b0a7-171ea8797988)
+![Image](https://github.com/user-attachments/assets/4d3b7c93-66fb-4c12-a3fb-0f8e97a427db)
 
 Nhấn Finish. Bây giờ bạn sẽ thấy nó trong tab System Contents.
 Lặp lại ba bước cuối cùng để thêm một bộ điều khiển reset khác.
@@ -83,7 +83,7 @@ Lặp lại ba bước cuối cùng để thêm một bộ điều khiển reset
 ### 4. Cấu hình IP Core "Clock Bridge"
 Tìm kiếm và Thêm IP: Trong IP Catalog, tìm kiếm "Clock Bridge" và thêm vào hệ thống.
 
-![Image](https://github.com/user-attachments/assets/d04129c9-58e3-46d3-99a2-a3ae3224c017)
+![Image](https://github.com/user-attachments/assets/104fec91-90d0-4532-b212-46659725bf9f)
 
 Cấu hình Tham số:
 - Cấu hình đơn giản là xuất cổng out_clk.
@@ -102,11 +102,12 @@ Cấu hình Tham số:
   - Các cổng command (channel, valid, startofpacket, endofpacket) của Modular_ADC được xuất ra để kết nối với logic Verilog.
   - Các cổng response (channel, data, valid) của Modular_ADC được xuất ra để kết nối với logic Verilog.
 
-![Image](https://github.com/user-attachments/assets/94281c38-a0e9-45f3-847a-0bfc16888c23)
+![Image](https://github.com/user-attachments/assets/4f429ff6-1264-4f52-8865-b26244348943)
 
 ## C. Kết nối phần cứng
 Mục địch đo và kiểm thử
 
-![Image](https://github.com/user-attachments/assets/56f286d7-24ba-45a2-90d2-97cc2b2d0aad)
+![Image](https://github.com/user-attachments/assets/c3d84e7e-432d-4d50-96bb-5537cbabc1a5)
+
 
   
