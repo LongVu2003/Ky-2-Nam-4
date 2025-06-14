@@ -18,7 +18,7 @@ Giá trị 12 bit từ ADC được hiển thị dưới dạng hexadecimal (th�
 
 ## A. Sơ đồ khối hệ thống 
 
-![Image](https://github.com/user-attachments/assets/d52df7ff-f454-4f43-83dc-4018aa4963c5)
+![Image](https://github.com/user-attachments/assets/d5901517-7573-41d7-8c2f-808a10676ae8)
 
 ## B. Thiết kế IP ADC trên nền tảng Platfrom Design.
 ### 1. Cấu hình IP Core "Altera Modular ADC".
