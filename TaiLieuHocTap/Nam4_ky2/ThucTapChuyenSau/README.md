@@ -1,5 +1,10 @@
 
 # Báo cáo THCS.
+# Thông tin nhóm sinh viên thực hiện
+
+1. Đoàn Long Vũ - B21DCDT247
+2. Nguyễn Sỹ Toản - B21DCDT223
+
 # DE10-ADC
 Kho lưu trữ này chứa các tệp mô tả phần cứng và hướng dẫn cấu hình bộ chuyển đổi tương tự số (ADC) tích hợp trên các FPGA dòng DE để đạt tốc độ lấy mẫu 2MHz.
 
