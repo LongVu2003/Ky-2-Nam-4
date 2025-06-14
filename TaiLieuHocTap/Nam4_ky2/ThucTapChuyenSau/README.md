@@ -83,12 +83,12 @@ Lặp lại ba bước cuối cùng để thêm một bộ điều khiển reset
 ### 4. Cấu hình IP Core "Clock Bridge"
 Tìm kiếm và Thêm IP: Trong IP Catalog, tìm kiếm "Clock Bridge" và thêm vào hệ thống.
 
-![Image](https://github.com/user-attachments/assets/104fec91-90d0-4532-b212-46659725bf9f)
+![Image](https://github.com/user-attachments/assets/cbce5250-bac2-4d47-8554-a3f23e426ec5)
 
 Cấu hình Tham số:
 - Cấu hình đơn giản là xuất cổng out_clk.
 
-### 5. 
+### 5. Kết nối các IP Core trong Platform Designer (Qsys).
 
 - Clock:
   - Nguồn clock 50MHz chính của bo mạch vào đầu vào của ALTPLL và Reset_controller_0.
@@ -102,12 +102,12 @@ Cấu hình Tham số:
   - Các cổng command (channel, valid, startofpacket, endofpacket) của Modular_ADC được xuất ra để kết nối với logic Verilog.
   - Các cổng response (channel, data, valid) của Modular_ADC được xuất ra để kết nối với logic Verilog.
 
-![Image](https://github.com/user-attachments/assets/4f429ff6-1264-4f52-8865-b26244348943)
+![Image](https://github.com/user-attachments/assets/4249eb2a-cd99-42cb-b601-0e2a508a1726)
 
 ## C. Kết nối phần cứng
 Mục địch đo và kiểm thử
 
-![Image](https://github.com/user-attachments/assets/c3d84e7e-432d-4d50-96bb-5537cbabc1a5)
+![Image](https://github.com/user-attachments/assets/176c2273-0077-476d-9d72-f889ce649987)
 
 
   
