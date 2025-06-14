@@ -1,5 +1,20 @@
 
 # Báo cáo THCS.
+# DE10-ADC
+Kho lưu trữ này chứa các tệp mô tả phần cứng và hướng dẫn cấu hình bộ chuyển đổi tương tự số (ADC) tích hợp trên các FPGA dòng DE để đạt tốc độ lấy mẫu 2MHz.
+
+Hướng dẫn này sử dụng Quartus Prime 17.1 và công cụ IP Qsys, nhưng cũng có thể được hỗ trợ bởi Platform Designer (trước đây là Qsys) và các phiên bản Quartus mới hơn.
+
+Thông tin cấu hình FPGA
+
+Bo mạch được sử dụng cho cấu hình này là DE10-Lite (10M50DAF484C7G), có hai FPGA tích hợp, nhưng chỉ sử dụng ADC0. Vui lòng tham khảo sổ tay người dùng và hướng dẫn cấu hình để biết thông tin về gán chân (pin assignment) và cấu hình ADC nếu bạn sử dụng bo mạch khác.
+
+Dự án này sử dụng SW[2:0] để chọn đầu vào analog mà ADC sẽ lấy mẫu, và kết quả lựa chọn được hiển thị trên HEX5.
+
+Giá trị 12 bit từ ADC được hiển thị dưới dạng hexadecimal (thập lục phân) trên các màn hình HEX3, HEX2 và HEX1.
+
+Được tạo bởi sinh viên PTIT
+(Cập nhật ngày 14/06/2025)
 
 ## A. Sơ đồ khối hệ thống 
 
