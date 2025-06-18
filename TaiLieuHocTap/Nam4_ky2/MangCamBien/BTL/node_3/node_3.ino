@@ -1,3 +1,4 @@
+#include <Arduino.h>
 #include <esp_now.h>
 #include <WiFi.h>
 #include <DHT.h>
@@ -17,12 +18,12 @@
 // ======================================================================
 
 #define DHTTYPE DHT22
-#define SLEEP_DURATION_SECONDS 300 // 5 phút
+#define SLEEP_DURATION_SECONDS 5 // 5 phút
 
 // Địa chỉ MAC của ESP32 Gateway
 //uint8_t gatewayAddress[] = {0xEC,0xE3,0x34,0xbf,0x87,0x5c}; // EC:E3:34:BF:87:5C
 uint8_t broadcastAddress1[] = {0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF};
-uint8_t broadcastAddress2[] = {0xEC,0xE3,0x34,0xbf,0x87,0x5c}; //2c:bc:bb:92:75:48 EC:E3:34:BE:C7:C8
+uint8_t broadcastAddress2[] = {0x10,0x06,0x1C,0xB5,0xC3,0x80}; //10:06:1C:B5:C3:80
 uint8_t broadcastAddress3[] = {0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF};
 
 // Cấu trúc dữ liệu mới, đã loại bỏ co2 và tvoc
@@ -65,6 +66,14 @@ volatile bool sendSuccess = false;
 
 void setup() {
     Serial.begin(115200);
+    // Khởi tạo cảm biến
+    dht.begin();
+    pinMode(PIRPIN, INPUT);
+    Wire.begin(I2C_SDA, I2C_SCL);
+    if (!lightMeter.begin(BH1750::CONTINUOUS_HIGH_RES_MODE)) {
+        Serial.println(F("Loi khoi tao BH1750"));
+    }
+
     WiFi.mode(WIFI_STA);
     Serial.print("Node ID: ");
     Serial.print(NODE_ID);
@@ -95,22 +104,52 @@ void setup() {
         Serial.println("Failed to add peer");
         return;
     }
-    // Khởi tạo cảm biến
-    dht.begin();
-    pinMode(PIRPIN, INPUT);
-    Wire.begin(I2C_SDA, I2C_SCL);
-    if (!lightMeter.begin(BH1750::CONTINUOUS_HIGH_RES_MODE)) {
-        Serial.println(F("Loi khoi tao BH1750"));
-    }
+    
 }
 
 void loop() {
+  // Wait a few seconds between measurements.
+  delay(2000);
+
+  // Reading temperature or humidity takes about 250 milliseconds!
+  // Sensor readings may also be up to 2 seconds 'old' (its a very slow sensor)
+  float h = dht.readHumidity();
+  // Read temperature as Celsius (the default)
+  float t = dht.readTemperature();
+  // Read temperature as Fahrenheit (isFahrenheit = true)
+  float f = dht.readTemperature(true);
+
+  // Check if any reads failed and exit early (to try again).
+  if (isnan(h) || isnan(t) || isnan(f)) {
+    Serial.println(F("Failed to read from DHT sensor!"));
+    return;
+  }
+
+  // Compute heat index in Fahrenheit (the default)
+  float hif = dht.computeHeatIndex(f, h);
+  // Compute heat index in Celsius (isFahreheit = false)
+  float hic = dht.computeHeatIndex(t, h, false);
+
+  Serial.print(F("Humidity: "));
+  Serial.print(h);
+  Serial.print(F("%  Temperature: "));
+  Serial.print(t);
+  Serial.print(F("°C "));
+  Serial.print(f);
+  Serial.print(F("°F  Heat index: "));
+  Serial.print(hic);
+  Serial.print(F("°C "));
+  Serial.print(hif);
+  Serial.println(F("°F"));
     sendSuccess = false;
 
     // Đọc dữ liệu từ các cảm biến
     myData.id = NODE_ID;
     myData.humidity = dht.readHumidity();
     myData.temperature = dht.readTemperature();
+    //float h = dht.readHumidity();
+     //Serial.printf("Data : Hum=%.2f",h);
+     //Serial.println();
     myData.motion_detected = digitalRead(PIRPIN);
     myData.light_intensity = lightMeter.readLightLevel();
 

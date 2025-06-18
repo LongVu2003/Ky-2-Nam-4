@@ -1,0 +1,116 @@
+/* BIẾN MÀU VÀ FONT CHỮ CƠ BẢN */
+:root {
+    --primary-color: #007bff;
+    --success-color: #28a745;
+    --danger-color: #dc3545;
+    --light-gray: #f8f9fa;
+    --border-color: #dee2e6;
+}
+
+body { 
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif; 
+    margin: 0; 
+    background-color: var(--light-gray);
+    color: #333;
+}
+
+/* HEADER */
+.header {
+    background-color: var(--primary-color);
+    color: white;
+    padding: 15px 30px;
+    text-align: center;
+}
+
+/* BỐ CỤC CHÍNH */
+.main-container {
+    max-width: 1200px;
+    margin: 20px auto;
+    padding: 0 20px;
+}
+
+.monitoring-section, .control-section {
+    margin-bottom: 30px;
+}
+
+h2 {
+    border-bottom: 2px solid var(--primary-color);
+    padding-bottom: 10px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 20px;
+    justify-content: center;
+}
+
+/* PHẦN GIÁM SÁT NODE */
+.node-grid-container {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 20px;
+}
+.card {
+    background: white;
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    padding: 20px;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+}
+.card.offline { opacity: 0.6; border-left: 5px solid var(--danger-color); }
+.card.online { border-left: 5px solid var(--success-color); }
+.card h3 { margin-top: 0; color: #007bff; }
+.sensor-data p { font-size: 1em; display: flex; align-items: center; margin: 10px 0; }
+.sensor-data i { margin-right: 10px; color: var(--primary-color); width: 20px; }
+.timestamp { font-size: 0.8em; color: #6c757d; text-align: right; margin-top: 10px; }
+
+/* === PHẦN ĐIỀU KHIỂN ĐƯỢC THIẾT KẾ LẠI THEO HÌNH MẪU === */
+.control-group {
+    background-color: #ffffff;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+    margin-bottom: 20px; /* Khoảng cách giữa nhóm Đèn và Quạt */
+}
+
+.control-group h3 {
+    margin-top: 0;
+    margin-bottom: 25px;
+    text-align: center;
+    font-size: 1.5em;
+}
+/* Container chứa các công tắc trên 1 hàng */
+.device-container {
+    display: flex;
+    justify-content: space-around; /* Dàn đều các công tắc ra */
+    align-items: flex-start;
+    flex-wrap: wrap; /* Cho phép xuống hàng trên màn hình nhỏ */
+    gap: 20px;
+}
+/* CSS cho mỗi một cụm công tắc (Đèn 1, Đèn 2, ...) */
+.control-item {
+    display: flex;
+    flex-direction: column; /* Xếp tiêu đề, công tắc, trạng thái theo chiều dọc */
+    align-items: center;    /* Căn giữa chúng theo chiều ngang */
+    gap: 12px;              /* Khoảng cách giữa các phần tử bên trong */
+}
+.control-item h4 {
+    margin: 0;
+    font-size: 1.2em;
+    font-weight: bold;
+    color: #333;
+}
+.control-item p {
+     font-size: 0.9em;
+     color: #666;
+     margin: 0;
+}
+
+/* CSS cho công tắc gạt (giữ nguyên) */
+.switch { position: relative; display: inline-block; width: 50px; height: 28px; }
+.switch input { opacity: 0; width: 0; height: 0; }
+.slider { position: absolute; cursor: pointer; top: 0; left: 0; right: 0; bottom: 0; background-color: #ccc; transition: .4s; }
+.slider:before { position: absolute; content: ""; height: 20px; width: 20px; left: 4px; bottom: 4px; background-color: white; transition: .4s; }
+input:checked + .slider { background-color: var(--success-color); }
+input:checked + .slider:before { transform: translateX(22px); }
+.slider.round { border-radius: 34px; }
+.slider.round:before { border-radius: 50%; }

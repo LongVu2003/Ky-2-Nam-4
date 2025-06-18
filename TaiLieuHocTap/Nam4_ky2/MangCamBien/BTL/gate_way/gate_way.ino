@@ -1,42 +1,35 @@
 /*********
- * TÊN FILE: GATEWAY_THE_TRUE_FINAL.INO
+ * TÊN FILE: GATEWAY_FINAL_WITH_LOGGING.INO
  * MÔ TẢ:
- * - Áp dụng cách kiểm tra lỗi aClient.lastError() chính xác theo ví dụ bạn cung cấp.
- * - Đây là phiên bản hoàn thiện và ổn định nhất dựa trên tất cả các thảo luận của chúng ta.
+ * - Đã thêm các dòng Serial.printf để in ra các giá trị cần thiết,
+ * giúp theo dõi và gỡ lỗi dễ dàng hơn.
 *********/
 
-// --- THƯ VIỆN ---
+// --- THƯ VIỆN VÀ CẤU HÌNH (Giữ nguyên) ---
 #include <Arduino.h>
 #include <WiFi.h>
 #include <WiFiClientSecure.h>
 #include <FirebaseClient.h>
 #include <esp_now.h>
 
-// --- CẤU HÌNH GPIO ---
 const int numLights = 4;
 const int numFans = 4;
 const int lightPins[numLights] = {26, 25, 33, 32};
 const int fanPins[numFans] = {27, 14, 12, 13};
 
-// --- CẤU TRÚC DỮ LIỆU ---
 typedef struct struct_message {
-    int id;
-    float temperature;
-    float humidity;
-    float light_intensity;
-    bool motion_detected;
+    int id; float temperature; float humidity; float light_intensity; bool motion_detected;
 } struct_message;
-struct_message incomingData;
+struct_message incomingData, dataToProcess; 
+volatile bool newData = false;
 
-// --- CẤU HÌNH MẠNG VÀ FIREBASE ---
-#define WIFI_SSID "Xuong"
-#define WIFI_PASSWORD "68686868"
+#define WIFI_SSID "Tang 7_2"
+#define WIFI_PASSWORD "gongangsachse"
 #define Web_API_KEY "AIzaSyAH76sndFX2iDnoJq8aiDVBRvyJFerP4Yo"
 #define DATABASE_URL "https://espproject-ccd63-default-rtdb.asia-southeast1.firebasedatabase.app/"
 #define USER_EMAIL "doanlongvu2003@gmail.com"
 #define USER_PASS "Vu26122002:)"
 
-// --- CÁC ĐỐI TƯỢNG FIREBASE ---
 UserAuth user_auth(Web_API_KEY, USER_EMAIL, USER_PASS);
 FirebaseApp app;
 WiFiClientSecure ssl_client;
@@ -44,51 +37,25 @@ using AsyncClient = AsyncClientClass;
 AsyncClient aClient(ssl_client);
 RealtimeDatabase Database;
 
+unsigned long lastCheckTime = 0;
+const unsigned long checkInterval = 500;
+
 void processData(AsyncResult &aResult);
 
-// --- HÀM CALLBACK KHI NHẬN DỮ LIỆU ESP-NOW ---
+// --- HÀM CALLBACK ESP-NOW (Giữ nguyên) ---
 void OnDataRecv(const uint8_t *mac_addr, const uint8_t *data, int len) {
     memcpy(&incomingData, data, sizeof(incomingData));
-
-    Serial.println("-------------------------------------------");
-    Serial.print("Nhan du lieu tu Node co dia chi MAC: ");
-    char macStr[18];
-    snprintf(macStr, sizeof(macStr), "%02x:%02x:%02x:%02x:%02x:%02x",
-             mac_addr[0], mac_addr[1], mac_addr[2], mac_addr[3], mac_addr[4], mac_addr[5]);
-    Serial.println(macStr);
-    Serial.printf("  Node ID: %d\n", incomingData.id);
-    Serial.printf("  Nhiet do: %.2f *C\n", incomingData.temperature);
-    Serial.printf("  Do am: %.2f %%\n", incomingData.humidity);
-    Serial.printf("  Cuong do anh sang: %.2f lx\n", incomingData.light_intensity);
-    Serial.printf("  Phat hien chuyen dong: %s\n", incomingData.motion_detected ? "Co" : "Khong");
-
-    // <<<<<<<<<<<<<<< LOGIC GỬI FIREBASE ĐƯỢC CHUYỂN VÀO ĐÂY >>>>>>>>>>>>>>>
-    if (app.ready()){
-        Serial.println("Firebase da san sang. Dang day du lieu len...");
-        String basePath = "/sensorData/node" + String(incomingData.id);
-        
-        Database.set<float>(aClient, basePath + "/temperature", incomingData.temperature, processData, "Send_Temp");
-        Database.set<float>(aClient, basePath + "/humidity", incomingData.humidity, processData, "Send_Hum");
-        Database.set<float>(aClient, basePath + "/light_intensity", incomingData.light_intensity, processData, "Send_Light");
-        Database.set<bool>(aClient, basePath + "/motion_detected", incomingData.motion_detected, processData, "Send_Motion");
-        Database.set<String>(aClient, basePath + "/last_update", ".sv", processData, "Set_Timestamp");
-    } else {
-        Serial.println("Firebase CHUA san sang, khong the gui du lieu.");
-    }
-    Serial.println("-------------------------------------------");
+    newData = true; 
 }
 
-void setup() {
+void setup(){
     Serial.begin(115200);
 
     for (int i = 0; i < numLights; i++) { pinMode(lightPins[i], OUTPUT); digitalWrite(lightPins[i], LOW); }
     for (int i = 0; i < numFans; i++) { pinMode(fanPins[i], OUTPUT); digitalWrite(fanPins[i], LOW); }
 
     WiFi.begin(WIFI_SSID, WIFI_PASSWORD);
-    Serial.print("Connecting to Wi-Fi");
-    while (WiFi.status() != WL_CONNECTED) {
-        Serial.print("."); delay(300);
-    }
+    while (WiFi.status() != WL_CONNECTED) { Serial.print("."); delay(300); }
     Serial.println("\nWiFi connected!");
     
     configTime(7 * 3600, 0, "pool.ntp.org");
@@ -101,42 +68,88 @@ void setup() {
     WiFi.mode(WIFI_STA);
     if (esp_now_init() != ESP_OK) { return; }
     esp_now_register_recv_cb(esp_now_recv_cb_t(OnDataRecv));
-    Serial.println("Gateway da san sang.");
+    Serial.println(">>> Gateway da san sang. <<<");
 }
 
 void loop() {
     app.loop();
 
-    if (app.ready()) {
-        // Lặp qua 4 đèn
-        for (int i = 0; i < numLights; i++) {
-            String path = "/LED/LED" + String(i + 1);
-            // Lấy trạng thái của đèn
-            bool state = Database.get<bool>(aClient, path);
-            
-            // << SỬA LỖI CUỐI CÙNG: Dùng aClient.lastError() để kiểm tra, theo đúng ví dụ bạn gửi >>
-            if (aClient.lastError().code() == 0) {
-                 digitalWrite(lightPins[i], state);
-            }
-        }
-        // Lặp qua 4 quạt
-        for (int i = 0; i < numFans; i++) {
-            String path = "/LED/Fan" + String(i + 1);
-            bool state = Database.get<bool>(aClient, path);
+    if (newData) {
+        newData = false;
+        noInterrupts();
+        dataToProcess = incomingData;
+        interrupts();
+        
+        // <<< IN RA: Dữ liệu cảm biến vừa nhận được >>>
+        Serial.println("\n-------------------------------------------");
+        Serial.printf("> Nhan duoc du lieu tu Node ID: %d\n", dataToProcess.id);
+        Serial.printf("  - Nhiet do        : %.2f *C\n", dataToProcess.temperature);
+        Serial.printf("  - Do am           : %.2f %%\n", dataToProcess.humidity);
+        Serial.printf("  - Anh sang        : %.2f lx\n", dataToProcess.light_intensity);
+        Serial.printf("  - Chuyen dong     : %s\n", dataToProcess.motion_detected ? "Co" : "Khong");
 
-            // << SỬA LỖI CUỐI CÙNG: Dùng aClient.lastError() để kiểm tra, theo đúng ví dụ bạn gửi >>
-            if (aClient.lastError().code() == 0) {
-                digitalWrite(fanPins[i], state);
+        if (app.ready()){
+            Serial.println("> Trang thai: Firebase OK. Bat dau gui du lieu...");
+            String basePath = "/sensorData/node" + String(dataToProcess.id);
+            Database.set<float>(aClient, basePath + "/temperature", dataToProcess.temperature, processData, "Send_Temp");
+            Database.set<float>(aClient, basePath + "/humidity", dataToProcess.humidity, processData, "Send_Hum");
+            Database.set<float>(aClient, basePath + "/light_intensity", dataToProcess.light_intensity, processData, "Send_Light");
+            Database.set<bool>(aClient, basePath + "/motion_detected", dataToProcess.motion_detected, processData, "Send_Motion");
+            Database.set<String>(aClient, basePath + "/last_update", ".sv", processData, "Set_Timestamp");
+        } else {
+            Serial.println("> Trang thai: Firebase CHUA san sang.");
+        }
+        Serial.println("-------------------------------------------");
+    }
+
+    if (app.ready()) {
+        unsigned long currentTime = millis();
+        if (currentTime - lastCheckTime >= checkInterval) {
+            lastCheckTime = currentTime;
+            
+            for (int i = 1; i <= numLights; i++) {
+                Database.get(aClient, "/LED/LED" + String(i), processData, false, "Get_LED" + String(i));
+            }
+            for (int i = 1; i <= numFans; i++) {
+                Database.get(aClient, "/LED/Fan" + String(i), processData, false, "Get_Fan" + String(i));
             }
         }
     }
-    delay(1000);
 }
 
-// Hàm callback này chủ yếu để xử lý lỗi hoặc các sự kiện nền
-void processData(AsyncResult &aResult) {
-    if (!aResult.isResult()) return;
-    if (aResult.isError()) {
-        Firebase.printf("Loi tac vu: %s, Thong diep: %s, Ma loi: %d\n", aResult.uid().c_str(), aResult.error().message().c_str(), aResult.error().code());
+void processData(AsyncResult &aResult){
+    // Xử lý các sự kiện
+    if (aResult.isEvent())
+        Firebase.printf("Event: %s, msg: %s\n", aResult.uid().c_str(), aResult.eventLog().message().c_str());
+    
+    // <<< IN RA: Bật lại phần báo lỗi quan trọng >>>
+    //if (aResult.isError())
+       // Firebase.printf("Error: %s, msg: %s\n", aResult.uid().c_str(), aResult.error().message().c_str());
+
+    // Chỉ xử lý khi có dữ liệu payload trả về
+    if (aResult.available()) {
+        String uid = aResult.uid();
+        String payload = aResult.c_str();
+        bool state = (payload == "true");
+
+        // Dùng vòng lặp để kiểm tra và điều khiển ĐÈN
+        for (int i = 1; i <= numLights; i++) {
+            if (uid == "Get_LED" + String(i)) {
+                // <<< IN RA: Hành động điều khiển cụ thể >>>
+                //Serial.printf("  [CONTROL] Dieu khien Den %d -> %s\n", i, state ? "BAT" : "TAT");
+                digitalWrite(lightPins[i - 1], state);
+                return; 
+            }
+        }
+        
+        // Dùng vòng lặp để kiểm tra và điều khiển QUẠT
+        for (int i = 1; i <= numFans; i++) {
+            if (uid == "Get_Fan" + String(i)) {
+                // <<< IN RA: Hành động điều khiển cụ thể >>>
+               // Serial.printf("  [CONTROL] Dieu khien Quat %d -> %s\n", i, state ? "BAT" : "TAT");
+                digitalWrite(fanPins[i - 1], state);
+                return;
+            }
+        }
     }
 }
