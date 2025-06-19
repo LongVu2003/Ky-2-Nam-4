@@ -1,0 +1,67 @@
+Added Component: Designator=*(ESP32 DEVKIT)
+Add component. Clean all parameters for all variants
+Added Component: Designator=JP1(JP 1x3 DT)
+Add component. Clean all parameters for all variants
+Add component (AddParameter): Name = "Chung_Loai"; Value = "C?m"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "Don_Vi"; Value = "Con"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "Ghi_Chu"; Value = ""; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "Kieu_Chan"; Value = ""; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "Ma_Hang"; Value = "MH000903"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "Ten_Linh_Kien"; Value = "Jump Ðon Ð?c 2.54MM 1x40P Th?ng 11MM"; VariantName = "[No Variations]"
+Added Component: Designator=JP2(JP 1x5 CT)
+Add component. Clean all parameters for all variants
+Add component (AddParameter): Name = "Chung_Loai"; Value = "C?m"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "Don_Vi"; Value = "Con"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "Ghi_Chu"; Value = ""; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "Kieu_Chan"; Value = ""; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "Ma_Hang"; Value = "MH004006"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "Ten_Linh_Kien"; Value = "Jump Ðon Cái 2.54MM 1x20P Th?ng"; VariantName = "[No Variations]"
+Added Component: Designator=JP3(JP 1x3 DT)
+Add component. Clean all parameters for all variants
+Add component (AddParameter): Name = "Chung_Loai"; Value = "C?m"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "Don_Vi"; Value = "Con"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "Ghi_Chu"; Value = ""; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "Kieu_Chan"; Value = ""; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "Ma_Hang"; Value = "MH000903"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "Ten_Linh_Kien"; Value = "Jump Ðon Ð?c 2.54MM 1x40P Th?ng 11MM"; VariantName = "[No Variations]"
+Added Component: Designator=JP?(JP 1x5 DT)
+Add component. Clean all parameters for all variants
+Add component (AddParameter): Name = "Chung_Loai"; Value = "C?m"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "Don_Vi"; Value = "Con"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "Ghi_Chu"; Value = ""; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "Kieu_Chan"; Value = ""; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "Ma_Hang"; Value = "MH000903"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "Ten_Linh_Kien"; Value = "Jump Ðon Ð?c 2.54MM 1x40P Th?ng 11MM"; VariantName = "[No Variations]"
+Added Pin To Net: NetName=VCC Pin=*-1
+Added Pin To Net: NetName=GND Pin=*-18
+Added Pin To Net: NetName=DHT Pin=*-26
+Added Pin To Net: NetName=PIR Pin=*-29
+Added Pin To Net: NetName=GND Pin=*-32
+Added Pin To Net: NetName=SDA Pin=*-33
+Added Pin To Net: NetName=SCL Pin=*-36
+Added Pin To Net: NetName=GND Pin=*-38
+Added Pin To Net: NetName=VCC Pin=JP1-1
+Added Pin To Net: NetName=PIR Pin=JP1-2
+Added Pin To Net: NetName=GND Pin=JP1-3
+Added Pin To Net: NetName=GND Pin=JP2-1
+Added Pin To Net: NetName=SDA Pin=JP2-3
+Added Pin To Net: NetName=SCL Pin=JP2-4
+Added Pin To Net: NetName=VCC Pin=JP2-5
+Added Pin To Net: NetName=VCC Pin=JP3-1
+Added Pin To Net: NetName=DHT Pin=JP3-2
+Added Pin To Net: NetName=GND Pin=JP3-3
+Added Pin To Net: NetName=GND Pin=JP?-1
+Added Pin To Net: NetName=5V Pin=JP?-2
+Added Net: Name=5V
+Added Pin To Net: NetName=G12 Pin=JP?-3
+Added Net: Name=G12
+Added Pin To Net: NetName=G14 Pin=JP?-4
+Added Net: Name=G14
+Added Pin To Net: NetName=G27 Pin=JP?-5
+Added Net: Name=G27
+Added Member To Class: ClassName=node Member=Component * ESP32 DEV KIT
+Added Member To Class: ClassName=node Member=Component JP1 JP 1x3 2.54
+Added Member To Class: ClassName=node Member=Component JP2 JP 1x5 2.54
+Added Member To Class: ClassName=node Member=Component JP3 JP 1x3 2.54
+Added Member To Class: ClassName=node Member=Component JP? JP 1x5 2.54
+Added Room: Name=node

@@ -6,11 +6,11 @@
 #include <BH1750.h>
 
 // ======================================================================
-// >>> PHẦN CẦN CHỈNH SỬA CHO TỪNG NODE <<<
+// >>> NODE DÈIND
 // ======================================================================
 #define NODE_ID 1 // <<< THAY ĐỔI ID CHO MỖI NODE (1, 2, 3)
 
-// Chân cảm biến (có thể cần điều chỉnh tùy theo cách bạn nối dây)
+// Chân cảm biến
 #define DHTPIN 4      // Chân DHT22
 #define PIRPIN 5      // Chân PIR
 #define I2C_SDA 21    // Chân I2C SDA

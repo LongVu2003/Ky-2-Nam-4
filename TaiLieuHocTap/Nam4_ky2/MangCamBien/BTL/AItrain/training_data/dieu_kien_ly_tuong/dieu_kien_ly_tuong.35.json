@@ -1,0 +1,39 @@
+{
+    "protected": {
+        "ver": "v1",
+        "alg": "HS256",
+        "iat": 0
+    },
+    "signature": "bd7a230ba55e5db19fb1360a81ef1eeb99daded9c8e9108b90b7002bead805a3",
+    "payload": {
+        "device_name": "ESP32_Gateway",
+        "device_type": "ESP32_Classifier",
+        "interval_ms": 1000,
+        "sensors": [
+            {
+                "name": "temperature",
+                "units": "Cel"
+            },
+            {
+                "name": "humidity",
+                "units": "%"
+            },
+            {
+                "name": "light_intensity",
+                "units": "lx"
+            },
+            {
+                "name": "motion",
+                "units": "0/1"
+            }
+        ],
+        "values": [
+            [
+                28.5,
+                63.7,
+                845.0,
+                1
+            ]
+        ]
+    }
+}

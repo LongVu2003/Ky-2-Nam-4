@@ -1,0 +1,24 @@
+Removed Pin From Net: NetName=GND Pin=JP?-1
+Removed Pin From Net: NetName=5V Pin=JP?-2
+Removed Pin From Net: NetName=G12 Pin=JP?-3
+Removed Pin From Net: NetName=G14 Pin=JP?-4
+Removed Pin From Net: NetName=G27 Pin=JP?-5
+Removed Member From Class: ClassName=node Member=JP?
+Added Component: Designator=JP4(JP 1x7 CT)
+Add component. Clean all parameters for all variants
+Add component (AddParameter): Name = "Chung_Loai"; Value = "C?m"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "Don_Vi"; Value = "Con"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "Ghi_Chu"; Value = ""; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "Kieu_Chan"; Value = ""; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "Ma_Hang"; Value = "MH004006"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "Ten_Linh_Kien"; Value = "Jump Ðon Cái 2.54MM 1x20P Th?ng"; VariantName = "[No Variations]"
+Added Pin To Net: NetName=5V Pin=JP4-1
+Added Pin To Net: NetName=GND Pin=JP4-2
+Added Pin To Net: NetName=G12 Pin=JP4-4
+Added Pin To Net: NetName=G14 Pin=JP4-5
+Added Pin To Net: NetName=G27 Pin=JP4-6
+Added Pin To Net: NetName=G13 Pin=JP4-3
+Added Net: Name=G13
+Added Pin To Net: NetName=G26 Pin=JP4-7
+Added Net: Name=G26
+Added Member To Class: ClassName=node Member=Component JP4 JP 1x7 2.54
