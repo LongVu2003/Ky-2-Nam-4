@@ -1,0 +1,53 @@
+Removed Pin From Net: NetName=VCC Pin=JP1-1
+Removed Pin From Net: NetName=VCC Pin=JP2-5
+Removed Pin From Net: NetName=VCC Pin=JP3-1
+Added Component: Designator=*1(ESP32 DEVKIT)
+Add component. Clean all parameters for all variants
+Added Component: Designator=JP5(JP 1x10 CT)
+Add component. Clean all parameters for all variants
+Add component (AddParameter): Name = "Chung_Loai"; Value = "C?m"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "Don_Vi"; Value = "Con"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "Ghi_Chu"; Value = ""; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "Kieu_Chan"; Value = ""; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "Ma_Hang"; Value = "MH004006"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "Ten_Linh_Kien"; Value = "Jump Ðon Cái 2.54MM 1x20P Th?ng"; VariantName = "[No Variations]"
+Added Component: Designator=L2(LED-3MM-RED)
+Add component. Clean all parameters for all variants
+Add component (AddParameter): Name = "Chung_Loai"; Value = "C?m"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "Don_Vi"; Value = "Con"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "Ghi_Chu"; Value = ""; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "Kieu_Chan"; Value = ""; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "Ma_Hang"; Value = "MH003892"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "Ten_Linh_Kien"; Value = "Led 3MM Ph? Ð? (10c)"; VariantName = "[No Variations]"
+Added Pin To Net: NetName=3V3 Pin=*1-1
+Added Pin To Net: NetName=G32 Pin=*1-7
+Added Pin To Net: NetName=G33 Pin=*1-8
+Added Pin To Net: NetName=G25 Pin=*1-9
+Added Pin To Net: NetName=G26 Pin=*1-10
+Added Pin To Net: NetName=G27 Pin=*1-11
+Added Pin To Net: NetName=G14 Pin=*1-12
+Added Pin To Net: NetName=G12 Pin=*1-13
+Added Pin To Net: NetName=G13 Pin=*1-15
+Added Pin To Net: NetName=GND Pin=*1-18
+Added Pin To Net: NetName=VCC Pin=*1-19
+Added Pin To Net: NetName=GND Pin=*1-38
+Added Pin To Net: NetName=5V Pin=JP1-1
+Added Pin To Net: NetName=3V3 Pin=JP2-5
+Added Pin To Net: NetName=3V3 Pin=JP3-1
+Added Pin To Net: NetName=G13 Pin=JP5-1
+Added Pin To Net: NetName=G12 Pin=JP5-2
+Added Pin To Net: NetName=G14 Pin=JP5-3
+Added Pin To Net: NetName=G27 Pin=JP5-4
+Added Pin To Net: NetName=G26 Pin=JP5-5
+Added Pin To Net: NetName=G25 Pin=JP5-6
+Added Pin To Net: NetName=G33 Pin=JP5-7
+Added Pin To Net: NetName=G32 Pin=JP5-8
+Added Pin To Net: NetName=GND Pin=JP5-9
+Added Pin To Net: NetName=VCC Pin=JP5-10
+Added Pin To Net: NetName=3V3 Pin=L2-1
+Added Pin To Net: NetName=GND Pin=L2-2
+Added Member To Class: ClassName=GateWay Member=Component *1 ESP32 DEV KIT
+Added Member To Class: ClassName=GateWay Member=Component JP5 JP 1x10 2.54
+Added Member To Class: ClassName=GateWay Member=Component L2 LED 3mm
+Added Room: Name=GateWay
+Added Room: Name=node

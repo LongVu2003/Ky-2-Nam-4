@@ -1,5 +1,5 @@
 // --- CẤU HÌNH ---
-// !!! DÁN FIREBASE CONFIG CỦA BẠN VÀO ĐÂY !!!
+// !!! DÁN FIREBASE CONFIG ĐẦY ĐỦ CỦA BẠN VÀO ĐÂY !!!
 const firebaseConfig = {
     apiKey: "AIzaSyAH76sndFX2iDnoJq8aiDVBRvyJFerP4Yo",
     authDomain: "espproject-ccd63.firebaseapp.com",
@@ -13,7 +13,6 @@ const firebaseConfig = {
 const TOTAL_NODES = 3; 
 const NUM_LIGHTS = 4;
 const NUM_FANS = 4;
-const OFFLINE_THRESHOLD_MINUTES = 10;
 
 // --- KHỞI TẠO ---
 firebase.initializeApp(firebaseConfig);
@@ -27,6 +26,7 @@ const aiContainer = document.getElementById('ai-control-container');
 
 
 // --- LOGIC HIỂN THỊ DỮ LIỆU CẢM BIẾN ---
+// Tạo card giao diện ban đầu cho các Node
 for (let i = 1; i <= TOTAL_NODES; i++) {
     const card = document.createElement('div');
     card.className = 'card';
@@ -44,41 +44,44 @@ for (let i = 1; i <= TOTAL_NODES; i++) {
     nodeCardsContainer.appendChild(card);
 }
 
+// Lắng nghe dữ liệu từ Firebase cho từng Node
 for (let i = 1; i <= TOTAL_NODES; i++) {
     const nodePath = `/sensorData/node${i}`;
     database.ref(nodePath).on('value', (snapshot) => {
         const data = snapshot.val();
-        if (data) {
-            document.getElementById(`temp-node${i}`).textContent = data.temperature !== undefined ? data.temperature.toFixed(1) : 'N/A';
-            document.getElementById(`hum-node${i}`).textContent = data.humidity !== undefined ? data.humidity.toFixed(1) : 'N/A';
-            document.getElementById(`light-node${i}`).textContent = data.light_intensity !== undefined ? Math.round(data.light_intensity) : 'N/A';
-            document.getElementById(`motion-node${i}`).textContent = data.motion_detected ? "Có người" : "Không có ai";
-            updateTimestampAndStatus(i, data.last_update);
-        } else {
-             updateTimestampAndStatus(i, 0);
-        }
+        
+        // <<< THAY ĐỔI CÁCH GỌI HÀM Ở ĐÂY >>>
+        // Thay vì truyền data.last_update, chúng ta truyền cả đối tượng data
+        updateNodeCard(i, data);
     });
 }
 
-function updateTimestampAndStatus(nodeId, timestamp) {
+// <<< HÀM ĐÃ ĐƯỢC GỘP VÀ ĐƠN GIẢN HÓA TỐI ĐA >>>
+function updateNodeCard(nodeId, data) {
     const timeElement = document.getElementById(`time-node${nodeId}`);
     const cardElement = document.getElementById(`node-card-${nodeId}`);
-    if (!timestamp || typeof timestamp !== 'number') {
-        timeElement.textContent = `Chờ dữ liệu...`;
-        cardElement.classList.remove('online', 'offline');
-        return;
-    }
-    const minutesAgo = (Date.now() - timestamp) / 1000 / 60;
-    if (minutesAgo > OFFLINE_THRESHOLD_MINUTES) {
-        timeElement.textContent = `Mất kết nối`;
-        cardElement.classList.add('offline');
-        cardElement.classList.remove('online');
-    } else {
+
+    // LOGIC ĐƠN GIẢN NHẤT THEO YÊU CẦU CỦA BẠN
+    if (data) {
+        // Nếu có đối tượng data (không phải null)
+        // Cập nhật tất cả thông số
+        document.getElementById(`temp-node${nodeId}`).textContent = data.temperature !== undefined ? data.temperature.toFixed(1) : 'N/A';
+        document.getElementById(`hum-node${nodeId}`).textContent = data.humidity !== undefined ? data.humidity.toFixed(1) : 'N/A';
+        document.getElementById(`light-node${nodeId}`).textContent = data.light_intensity !== undefined ? Math.round(data.light_intensity) : 'N/A';
+        document.getElementById(`motion-node${nodeId}`).textContent = data.motion_detected ? "Có người" : "Không có ai";
+        
+        // Hiển thị trạng thái "Vừa cập nhật"
+        timeElement.textContent = `Vừa cập nhật`;
         cardElement.classList.add('online');
         cardElement.classList.remove('offline');
-        timeElement.textContent = minutesAgo < 1 ? "Cập nhật vài giây trước" : `Cập nhật ${Math.round(minutesAgo)} phút trước`;
+
+    } else {
+        // Nếu không có data (null), hiển thị "Chờ dữ liệu..."
+        timeElement.textContent = `Chờ dữ liệu...`;
+        cardElement.classList.remove('online', 'offline');
     }
 }
+
 
 // --- LOGIC ĐIỀU KHIỂN THIẾT BỊ ---
 function createControlItem(type, id) {
@@ -98,7 +101,6 @@ function createControlItem(type, id) {
     
     toggle.addEventListener('change', (e) => {
         database.ref(firebasePath).set(e.target.checked);
-        // Khi người dùng bấm nút thủ công, tự động tắt chế độ AI
         database.ref('/controls/autoMode').set(false);
     });
     

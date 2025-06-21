@@ -1,0 +1,92 @@
+Added Component: Designator=*1(ESP32 DEVKIT)
+Add component. Clean all parameters for all variants
+Added Component: Designator=*(ESP32 DEVKIT)
+Add component. Clean all parameters for all variants
+Added Component: Designator=JP1(JP 1x3 DT)
+Add component. Clean all parameters for all variants
+Add component (AddParameter): Name = "Chung_Loai"; Value = "C?m"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "Don_Vi"; Value = "Con"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "Ghi_Chu"; Value = ""; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "Kieu_Chan"; Value = ""; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "Ma_Hang"; Value = "MH000903"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "Ten_Linh_Kien"; Value = "Jump Ðon Ð?c 2.54MM 1x40P Th?ng 11MM"; VariantName = "[No Variations]"
+Added Component: Designator=JP2(JP 1x5 CT)
+Add component. Clean all parameters for all variants
+Add component (AddParameter): Name = "Chung_Loai"; Value = "C?m"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "Don_Vi"; Value = "Con"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "Ghi_Chu"; Value = ""; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "Kieu_Chan"; Value = ""; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "Ma_Hang"; Value = "MH004006"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "Ten_Linh_Kien"; Value = "Jump Ðon Cái 2.54MM 1x20P Th?ng"; VariantName = "[No Variations]"
+Added Component: Designator=JP3(JP 1x3 DT)
+Add component. Clean all parameters for all variants
+Add component (AddParameter): Name = "Chung_Loai"; Value = "C?m"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "Don_Vi"; Value = "Con"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "Ghi_Chu"; Value = ""; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "Kieu_Chan"; Value = ""; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "Ma_Hang"; Value = "MH000903"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "Ten_Linh_Kien"; Value = "Jump Ðon Ð?c 2.54MM 1x40P Th?ng 11MM"; VariantName = "[No Variations]"
+Added Component: Designator=JP4(JP 1x7 CT)
+Add component. Clean all parameters for all variants
+Add component (AddParameter): Name = "Chung_Loai"; Value = "C?m"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "Don_Vi"; Value = "Con"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "Ghi_Chu"; Value = ""; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "Kieu_Chan"; Value = ""; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "Ma_Hang"; Value = "MH004006"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "Ten_Linh_Kien"; Value = "Jump Ðon Cái 2.54MM 1x20P Th?ng"; VariantName = "[No Variations]"
+Added Component: Designator=JP5(JP 1x10 CT)
+Add component. Clean all parameters for all variants
+Add component (AddParameter): Name = "Chung_Loai"; Value = "C?m"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "Don_Vi"; Value = "Con"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "Ghi_Chu"; Value = ""; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "Kieu_Chan"; Value = ""; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "Ma_Hang"; Value = "MH004006"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "Ten_Linh_Kien"; Value = "Jump Ðon Cái 2.54MM 1x20P Th?ng"; VariantName = "[No Variations]"
+Added Pin To Net: NetName=G32 Pin=*1-7
+Added Pin To Net: NetName=G33 Pin=*1-8
+Added Pin To Net: NetName=G25 Pin=*1-9
+Added Pin To Net: NetName=G26 Pin=*1-10
+Added Pin To Net: NetName=G27 Pin=*1-11
+Added Pin To Net: NetName=G14 Pin=*1-12
+Added Pin To Net: NetName=G12 Pin=*1-13
+Added Pin To Net: NetName=G13 Pin=*1-15
+Added Pin To Net: NetName=GND Pin=*1-18
+Added Pin To Net: NetName=VCC Pin=*1-19
+Added Pin To Net: NetName=GND Pin=*1-38
+Added Pin To Net: NetName=VCC Pin=*-1
+Added Pin To Net: NetName=G26 Pin=*-10
+Added Pin To Net: NetName=G27 Pin=*-11
+Added Pin To Net: NetName=G14 Pin=*-12
+Added Pin To Net: NetName=G12 Pin=*-13
+Added Pin To Net: NetName=G13 Pin=*-15
+Added Pin To Net: NetName=GND Pin=*-18
+Added Pin To Net: NetName=5V Pin=*-19
+Added Pin To Net: NetName=GND Pin=JP1-3
+Added Pin To Net: NetName=GND Pin=JP2-1
+Added Pin To Net: NetName=SDA Pin=JP2-3
+Added Pin To Net: NetName=SCL Pin=JP2-4
+Added Pin To Net: NetName=VCC Pin=JP2-5
+Added Pin To Net: NetName=VCC Pin=JP3-1
+Added Pin To Net: NetName=DHT Pin=JP3-2
+Added Pin To Net: NetName=GND Pin=JP3-3
+Added Pin To Net: NetName=5V Pin=JP4-1
+Added Pin To Net: NetName=GND Pin=JP4-2
+Added Pin To Net: NetName=G13 Pin=JP4-3
+Added Pin To Net: NetName=G12 Pin=JP4-4
+Added Pin To Net: NetName=G14 Pin=JP4-5
+Added Pin To Net: NetName=G27 Pin=JP4-6
+Added Pin To Net: NetName=G26 Pin=JP4-7
+Added Pin To Net: NetName=G13 Pin=JP5-1
+Added Pin To Net: NetName=G12 Pin=JP5-2
+Added Pin To Net: NetName=G14 Pin=JP5-3
+Added Pin To Net: NetName=G27 Pin=JP5-4
+Added Pin To Net: NetName=G26 Pin=JP5-5
+Added Pin To Net: NetName=G25 Pin=JP5-6
+Added Pin To Net: NetName=G33 Pin=JP5-7
+Added Pin To Net: NetName=G32 Pin=JP5-8
+Added Pin To Net: NetName=GND Pin=JP5-9
+Added Pin To Net: NetName=VCC Pin=JP5-10
+Added Member To Class: ClassName=GateWay Member=Component *1 ESP32 DEV KIT
+Added Member To Class: ClassName=GateWay Member=Component JP5 JP 1x10 2.54
+Added Room: Name=GateWay
+Added Room: Name=node

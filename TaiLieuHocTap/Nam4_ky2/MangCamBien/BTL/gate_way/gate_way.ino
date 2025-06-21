@@ -19,8 +19,8 @@
 // --- CẤU HÌNH GPIO VÀ STRUCT---
 const int numLights = 4;
 const int numFans = 4;
-const int lightPins[numLights] = {26, 25, 33, 32};
-const int fanPins[numFans] = {27, 14, 12, 13};
+const int lightPins[numLights] = {13, 12, 14, 27};
+const int fanPins[numFans] = {32, 33, 25, 26};
 
 typedef struct struct_message {
     int id; float temperature; float humidity; float light_intensity; bool motion_detected;
@@ -33,8 +33,8 @@ bool autoMode = true;
 
 
 // --- CẤU HÌNH MẠNG VÀ FIREBASE ---
-#define WIFI_SSID "Tang 7_2"
-#define WIFI_PASSWORD "gongangsachse"
+#define WIFI_SSID "Xuong"
+#define WIFI_PASSWORD "68686868"
 #define Web_API_KEY "AIzaSyAH76sndFX2iDnoJq8aiDVBRvyJFerP4Yo"
 #define DATABASE_URL "https://espproject-ccd63-default-rtdb.asia-southeast1.firebasedatabase.app/"
 #define USER_EMAIL "doanlongvu2003@gmail.com"
@@ -52,7 +52,7 @@ RealtimeDatabase Database;
 
 // --- BIẾN ĐỊNH THỜI  ---
 unsigned long lastCheckTime = 0;
-const unsigned long checkInterval = 500;
+const unsigned long checkInterval = 3000;
 
 
 // --- KHAI BÁO HÀM ---
@@ -160,8 +160,8 @@ void processData(AsyncResult &aResult){
         Firebase.printf("Event: %s, msg: %s\n", aResult.uid().c_str(), aResult.eventLog().message().c_str());
     
     // báo lỗi 
-    //if (aResult.isError())
-    //   Firebase.printf("Error: %s, msg: %s\n", aResult.uid().c_str(), aResult.error().message().c_str());
+    if (aResult.isError())
+       Firebase.printf("Error: %s, msg: %s\n", aResult.uid().c_str(), aResult.error().message().c_str());
 
     if (aResult.available()) {
         String uid = aResult.uid();
@@ -175,18 +175,19 @@ void processData(AsyncResult &aResult){
         }
 
         // Phần điều khiển đèn/quạt
-        for (int i = 1; i <= numLights; i++) {
-            if (uid == "Get_LED" + String(i)) {
-                digitalWrite(lightPins[i - 1], state);
-                return; 
-            }
-        }
         for (int i = 1; i <= numFans; i++) {
             if (uid == "Get_Fan" + String(i)) {
                 digitalWrite(fanPins[i - 1], state);
                 return;
             }
         }
+        for (int i = 1; i <= numLights; i++) {
+            if (uid == "Get_LED" + String(i)) {
+                digitalWrite(lightPins[i - 1], state);
+                return; 
+            }
+        }
+        
     }
 }
 
@@ -265,11 +266,25 @@ void run_ai_inference() {
 
     if (final_prediction == "can_bat_den") {
         Database.set<bool>(aClient, "/LED/LED1", true, processData, ""); 
+        Database.set<bool>(aClient, "/LED/LED2", true, processData, ""); 
+        Database.set<bool>(aClient, "/LED/LED3", true, processData, ""); 
+        Database.set<bool>(aClient, "/LED/LED4", true, processData, ""); 
+        
     } else if (final_prediction == "can_bat_quat") {
         Database.set<bool>(aClient, "/LED/Fan1", true, processData, ""); 
+        Database.set<bool>(aClient, "/LED/Fan2", true, processData, ""); 
+        Database.set<bool>(aClient, "/LED/Fan3", true, processData, ""); 
+        Database.set<bool>(aClient, "/LED/Fan4", true, processData, ""); 
+
     } else if (final_prediction == "can_bat_den_va_quat") {
-        Database.set<bool>(aClient, "/LED/LED1", true, processData, "");
-        Database.set<bool>(aClient, "/LED/Fan1", true, processData, "");
+        Database.set<bool>(aClient, "/LED/LED1", true, processData, ""); 
+        Database.set<bool>(aClient, "/LED/LED2", true, processData, ""); 
+        Database.set<bool>(aClient, "/LED/LED3", true, processData, ""); 
+        Database.set<bool>(aClient, "/LED/LED4", true, processData, "");
+        Database.set<bool>(aClient, "/LED/Fan1", true, processData, ""); 
+        Database.set<bool>(aClient, "/LED/Fan2", true, processData, ""); 
+        Database.set<bool>(aClient, "/LED/Fan3", true, processData, ""); 
+        Database.set<bool>(aClient, "/LED/Fan4", true, processData, "");
     } else if (final_prediction == "phong_trong") {
         for (int i = 1; i <= numLights; i++) Database.set<bool>(aClient, "/LED/LED" + String(i), false, processData, "");
         for (int i = 1; i <= numFans; i++) Database.set<bool>(aClient, "/LED/Fan" + String(i), false, processData, "");

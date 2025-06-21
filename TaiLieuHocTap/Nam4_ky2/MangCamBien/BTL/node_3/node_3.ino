@@ -11,7 +11,7 @@
 #define NODE_ID 3 // <<< THAY ĐỔI ID CHO MỖI NODE (1, 2, 3)
 
 // Chân cảm biến 
-#define DHTPIN 4      // Chân DHT22
+#define DHTPIN 5      // Chân DHT22
 #define PIRPIN 5      // Chân PIR
 #define I2C_SDA 21    // Chân I2C SDA
 #define I2C_SCL 22    // Chân I2C SCL
@@ -23,7 +23,7 @@
 // Địa chỉ MAC của ESP32 Gateway
 //uint8_t gatewayAddress[] = {0xEC,0xE3,0x34,0xbf,0x87,0x5c}; // EC:E3:34:BF:87:5C
 uint8_t broadcastAddress1[] = {0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF};
-uint8_t broadcastAddress2[] = {0x10,0x06,0x1C,0xB5,0xC3,0x80}; //10:06:1C:B5:C3:80
+uint8_t broadcastAddress2[] = {0xCC, 0xDB, 0xA7, 0x94, 0xF1, 0xB4}; //CC:DB:A7:94:F1:B4
 uint8_t broadcastAddress3[] = {0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF};
 
 // Cấu trúc dữ liệu mới, đã loại bỏ co2 và tvoc
